@@ -1,0 +1,47 @@
+
+-- view a csv using miller
+mlr --icsv cat data.csv
+
+-- selecting specific columns from a csv file
+mlr --icsv cut -f name,salary data.csv
+
+-- Filtering Rows: filtering rows based on a condition to show only rows where the salary is greater than 60000:
+mlr --icsv filter '$salary > 60000' data.csv
+
+-- To sort the data by a specific column (e.g., by age), you can use the sort operation:
+mlr --icsv sort -n age data.csv
+
+-- Calculating Statistics: You can use the stats1 command to calculate statistics such as sum, average, min, max, etc. For example, to compute the average salary:
+mlr --icsv stats1 -a mean -f salary data.csv
+
+-- Converting CSV to JSON : You can easily convert a CSV file to JSON format:
+mlr --icsv --ojson cat data.csv
+
+-- Renaming Columns: If you want to rename columns in your data, use the rename operation. For example, renaming name to full_name and salary to income:
+mlr --icsv rename name,full_name,salary,income data.csv
+
+-- Updating or Creating New Fields: To update a field or create a new one, you can use the put operation. For example, let’s create a new field called bonus where each person gets 10% of their salary
+mlr --icsv put '$bonus = $salary * 0.10' data.csv
+
+-- You can join this dataset with the main data based on the department field:
+mlr --icsv join --uheader --lp data --rp dept -j department -f data.csv -f departments.csv
+
+-- txt file separated by pipe
+mlr --icsv --ifs pipe --ragged -opprint summary -a count,null_count,distinct_count,min,max filename.txt
+
+-- txt file separated by tab
+mlr --icsv --ifs --oxtab --ragged -opprint summary -a count,null_count,distinct_count,min,max filename.txt
+
+mlr --icsv --ifs --oxtab --ragged -opprint summary -a count,null_count,distinct_count,min,max filename.txt
+
+-- txt file separated by comma
+mlr --icsv --ifs comma --ragged -opprint summary -a count,null_count,distinct_count,min,max filename.txt
+
+-- txt file with " in non-quoted-field separated by tab
+mlr --icsv --ifs comma --lazy-quotes --ragged -opprint summary -a count,null_count,distinct_count,min,max filename.txt
+
+-- csv file with separated by tab
+mlr --icsv --fs tab --ragged -opprint summary -a count,null_count,distinct_count,min,max filename.csv
+
+-- csv file with separated by pipe
+mlr --icsv --ifs pipe --ragged -opprint summary -a count,null_count,distinct_count,min,max filename.csv
